@@ -1,0 +1,13 @@
+prep_to_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: your_account_locator
+      user: your.email@example.com
+      authenticator: externalbrowser
+      role: your_role
+      database: your_dev_database
+      warehouse: your_warehouse
+      schema: PUBLIC
+      threads: 4
