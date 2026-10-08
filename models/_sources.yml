@@ -15,10 +15,5 @@ sources:
     schema: client_inh_reporting
     tables:
       - name: rpt_planning
-
-  - name: reporting
-    database: prd_reporting
-    schema: reporting
-    tables:
       - name: rpt_birthday_anniversary
 

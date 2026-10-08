@@ -17,64 +17,64 @@ rpt_dim_employee as (
 
 last_52_weeks as (
   select
-    `Engagement Date` as engagement_date,
-    `Week Number` as week_number,
-    `Employee Role` as employee_role,
-    `Employee Name` as employee_name,
-    `Employee Team` as employee_team,
-    `Employee Id` as employee_id,
-    `Employee Email Address` as employee_email_address,
-    `Employee Start Date` as employee_start_date,
-    `Employee Status` as employee_status,
-    `Planning Status` as planning_status,
-    `Engagement Code` as engagement_code,
-    `Product Name` as product_name,
-    `Product Category` as product_category,
-    `Customer Name` as customer_name,
-    `Shortcode` as shortcode,
-    `Deal Id` as deal_id,
-    `Deal Name` as deal_name,
-    `Deal Type` as deal_type,
-    `Deal Owner Name` as deal_owner_name,
-    `Deal Close Date` as deal_close_date,
-    `Deal Detail Id` as deal_detail_id,
-    `Request Details` as request_details,
-    `Request Date` as request_date,
-    `Is Public Holiday` as is_public_holiday,
-    `Engagement Hours` as engagement_hours,
-    `First Available Date` as first_available_date,
-    `Hubspot Url` as hubspot_url,
-    `TABMOVE` as tabmove
+    "Engagement Date" as engagement_date,
+    "Week Number" as week_number,
+    "Employee Role" as employee_role,
+    "Employee Name" as employee_name,
+    "Employee Team" as employee_team,
+    "Employee Id" as employee_id,
+    "Employee Email Address" as employee_email_address,
+    "Employee Start Date" as employee_start_date,
+    "Employee Status" as employee_status,
+    "Planning Status" as planning_status,
+    "Engagement Code" as engagement_code,
+    "Product Name" as product_name,
+    "Product Category" as product_category,
+    "Customer Name" as customer_name,
+    "Shortcode" as shortcode,
+    "Deal Id" as deal_id,
+    "Deal Name" as deal_name,
+    "Deal Type" as deal_type,
+    "Deal Owner Name" as deal_owner_name,
+    "Deal Close Date" as deal_close_date,
+    "Deal Detail Id" as deal_detail_id,
+    "Request Details" as request_details,
+    "Request Date" as request_date,
+    "Is Public Holiday" as is_public_holiday,
+    "Engagement Hours" as engagement_hours,
+    "First Available Date" as first_available_date,
+    "Hubspot Url" as hubspot_url,
+    "TABMOVE" as tabmove
   from rpt_planning
-  where `Engagement Date` >= date_add(current_date(), -364) -- last 52 weeks
+  where "Engagement Date" >= dateadd(day, -364, current_date()) -- last 52 weeks
 ),
 
 planning_username as (
   select
     *,
-    left(employee_email_address, locate('@', employee_email_address) - 1) as username
+    left(employee_email_address, position('@', employee_email_address) - 1) as username
   from last_52_weeks
 ),
 
 employee_username as (
   select
-    `Employee HK` as employee_hk,
-    `Employee ID` as employee_id,
-    `Employee Role` as employee_role,
-    `Employee Full Name` as employee_full_name,
-    `Employee First Name` as employee_first_name,
-    `Employee Last Name` as employee_last_name,
-    `Employee Email Address` as employee_email_address,
-    `Employee Team` as employee_team,
-    `Employee Birthday Date` as employee_birthday_date,
-    `Employee Start Date` as employee_start_date,
-    `Employee End Date` as employee_end_date,
-    `Employee Country` as employee_country,
-    `Employee Status` as employee_status,
-    `Employee Member Type` as employee_member_type,
-    `Tabmove` as tabmove,
-    `Reports To` as reports_to,
-    left(`Employee Email Address`, locate('@', `Employee Email Address`) - 1) as username
+    "Employee HK" as employee_hk,
+    "Employee ID" as employee_id,
+    "Employee Role" as employee_role,
+    "Employee Full Name" as employee_full_name,
+    "Employee First Name" as employee_first_name,
+    "Employee Last Name" as employee_last_name,
+    "Employee Email Address" as employee_email_address,
+    "Employee Team" as employee_team,
+    "Employee Birthday Date" as employee_birthday_date,
+    "Employee Start Date" as employee_start_date,
+    "Employee End Date" as employee_end_date,
+    "Employee Country" as employee_country,
+    "Employee Status" as employee_status,
+    "Employee Member Type" as employee_member_type,
+    "Tabmove" as tabmove,
+    "Reports To" as reports_to,
+    left("Employee Email Address", position('@', "Employee Email Address") - 1) as username
   from rpt_dim_employee
 ),
 

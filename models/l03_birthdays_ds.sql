@@ -8,17 +8,17 @@
 with
 
 rpt_birthday_anniversary as (
-  select * from {{ source('reporting', 'rpt_birthday_anniversary') }}
+  select * from {{ source('client_inh_reporting', 'rpt_birthday_anniversary') }}
 ),
 
 rename_input as (
   select
-    `First Name` as first_name,
-    `Last Name` as last_name,
-    `Status` as status,
-    `Member Type` as member_type,
-    `Anniversary or Birthday` as anniversary_or_birthday,
-    `Raw Date` as raw_date
+    "First Name" as first_name,
+    "Last Name" as last_name,
+    "Status" as status,
+    "Member Type" as member_type,
+    "Anniversary or Birthday" as anniversary_or_birthday,
+    "Raw Date" as raw_date
   from rpt_birthday_anniversary
 ),
 

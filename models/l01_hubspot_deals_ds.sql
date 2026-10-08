@@ -21,76 +21,76 @@ rpt_dim_deal_detail as (
 
 clean_1 as (
   select
-    `Deal HK` as deal_hk,
-    `Deal ID` as deal_id,
-    `Deal Name` as deal_name,
-    `Deal Currency Code` as deal_currency_code,
-    `Deal Type` as deal_type,
-    `Notes For Invoicing` as notes_for_invoicing,
-    `Tableau Order` as tableau_order,
-    `Snowflake Order` as snowflake_order,
-    `Fivetran Order` as fivetran_order,
-    `Invoicing` as invoicing,
-    `Close Date` as close_date,
-    `Last Activity Date` as last_activity_date,
-    `Deal Description` as deal_description,
-    `Deal Pipeline` as deal_pipeline,
-    `Current Stage` as current_stage,
-    `Deal Entity` as deal_entity,
-    upper(`Deal Name`) as deal_name_uppercase
+    "Deal HK" as deal_hk,
+    "Deal ID" as deal_id,
+    "Deal Name" as deal_name,
+    "Deal Currency Code" as deal_currency_code,
+    "Deal Type" as deal_type,
+    "Notes For Invoicing" as notes_for_invoicing,
+    "Tableau Order" as tableau_order,
+    "Snowflake Order" as snowflake_order,
+    "Fivetran Order" as fivetran_order,
+    "Invoicing" as invoicing,
+    "Close Date" as close_date,
+    "Last Activity Date" as last_activity_date,
+    "Deal Description" as deal_description,
+    "Deal Pipeline" as deal_pipeline,
+    "Current Stage" as current_stage,
+    "Deal Entity" as deal_entity,
+    upper("Deal Name") as deal_name_uppercase
   from rpt_dim_deal
 ),
 
 dim_deal_to_fact_deal as (
   select
     l.*,
-    r.`Deal Detail HK` as deal_detail_hk_1,
-    r.`Deal Detail Create Date` as deal_detail_create_date,
-    r.`Deal HK` as deal_hk_1,
-    r.`Customer HK` as customer_hk,
-    r.`Owner HK` as owner_hk,
-    r.`Quantity` as quantity,
-    r.`Bill Rate` as bill_rate,
-    r.`Deal Detail Amount` as deal_detail_amount,
-    r.`Deal Detail Amount (EUR)` as deal_detail_amount_eur,
-    r.`Deal Detail Amount (GBP)` as deal_detail_amount_gbp,
-    r.`Deal Detail Discount` as deal_detail_discount,
-    r.`Deal Detail Discount (EUR)` as deal_detail_discount_eur,
-    r.`Deal Detail Discount (GBP)` as deal_detail_discount_gbp,
-    r.`Deal Detail Discount Percentage` as deal_detail_discount_percentage,
-    r.`Deal Detail Price` as deal_detail_price,
-    r.`Deal Detail Price (EUR)` as deal_detail_price_eur,
-    r.`Deal Detail Price (GBP)` as deal_detail_price_gbp,
-    r.`Deal Detail Cost` as deal_detail_cost,
-    r.`Deal Detail Cost (EUR)` as deal_detail_cost_eur,
-    r.`Deal Detail Cost (GBP)` as deal_detail_cost_gbp,
-    r.`Deal Detail Margin` as deal_detail_margin,
-    r.`Deal Detail Margin (EUR)` as deal_detail_margin_eur,
-    r.`Deal Detail Margin (GBP)` as deal_detail_margin_gbp,
-    r.`Hours` as hours
+    r."Deal Detail HK" as deal_detail_hk_1,
+    r."Deal Detail Create Date" as deal_detail_create_date,
+    r."Deal HK" as deal_hk_1,
+    r."Customer HK" as customer_hk,
+    r."Owner HK" as owner_hk,
+    r."Quantity" as quantity,
+    r."Bill Rate" as bill_rate,
+    r."Deal Detail Amount" as deal_detail_amount,
+    r."Deal Detail Amount (EUR)" as deal_detail_amount_eur,
+    r."Deal Detail Amount (GBP)" as deal_detail_amount_gbp,
+    r."Deal Detail Discount" as deal_detail_discount,
+    r."Deal Detail Discount (EUR)" as deal_detail_discount_eur,
+    r."Deal Detail Discount (GBP)" as deal_detail_discount_gbp,
+    r."Deal Detail Discount Percentage" as deal_detail_discount_percentage,
+    r."Deal Detail Price" as deal_detail_price,
+    r."Deal Detail Price (EUR)" as deal_detail_price_eur,
+    r."Deal Detail Price (GBP)" as deal_detail_price_gbp,
+    r."Deal Detail Cost" as deal_detail_cost,
+    r."Deal Detail Cost (EUR)" as deal_detail_cost_eur,
+    r."Deal Detail Cost (GBP)" as deal_detail_cost_gbp,
+    r."Deal Detail Margin" as deal_detail_margin,
+    r."Deal Detail Margin (EUR)" as deal_detail_margin_eur,
+    r."Deal Detail Margin (GBP)" as deal_detail_margin_gbp,
+    r."Hours" as hours
   from clean_1 l
   inner join rpt_fact_deal_detail r
-    on l.deal_hk = r.`Deal HK`
+    on l.deal_hk = r."Deal HK"
 ),
 
 add_deal_detail as (
   select
     l.*,
-    r.`Deal Detail HK` as deal_detail_hk_2,
-    r.`Deal Detail ID` as deal_detail_id,
-    r.`Deal Details` as deal_details,
-    r.`Deal Detail Description` as deal_detail_description,
-    r.`Currency` as currency,
-    r.`Product Description` as product_description,
-    r.`Category` as category,
-    r.`Sub Category` as sub_category,
-    r.`Vendor` as vendor,
-    r.`Product` as product,
-    r.`Additional Information` as additional_information,
-    r.`Domain` as domain
+    r."Deal Detail HK" as deal_detail_hk_2,
+    r."Deal Detail ID" as deal_detail_id,
+    r."Deal Details" as deal_details,
+    r."Deal Detail Description" as deal_detail_description,
+    r."Currency" as currency,
+    r."Product Description" as product_description,
+    r."Category" as category,
+    r."Sub Category" as sub_category,
+    r."Vendor" as vendor,
+    r."Product" as product,
+    r."Additional Information" as additional_information,
+    r."Domain" as domain
   from dim_deal_to_fact_deal l
   inner join rpt_dim_deal_detail r
-    on l.deal_detail_hk_1 = r.`Deal Detail HK`
+    on l.deal_detail_hk_1 = r."Deal Detail HK"
 ),
 
 final as (
