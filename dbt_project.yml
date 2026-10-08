@@ -17,4 +17,5 @@ clean-targets:
 
 models:
   prep_to_dbt:
+    +materialized: view
 
