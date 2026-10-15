@@ -1,16 +1,16 @@
 -- Tableau Prep flow: L02 - Birthdays
 -- Flow LUID: 88214647-36b8-4486-82f2-0ee24b401f2a
 -- Output data source: L03 - Birthdays DS
--- Created by Autom8 on 2026-10-15 10:19
+-- Created by Autom8 on 2026-10-15 10:35
 {{ config(materialized='view') }}
 
 with
 
-rpt_birthday_anniversary as (
+import_rpt_birthday_anniversary as (
     select * from {{ source('client_inh_reporting', 'rpt_birthday_anniversary') }}
 ),
 
-import_rpt_birthday_anniversary as (
+renamed as (
     select
         "First Name" as first_name,
         "Last Name" as last_name,
@@ -18,11 +18,11 @@ import_rpt_birthday_anniversary as (
         "Member Type" as member_type,
         "Anniversary or Birthday" as anniversary_or_birthday,
         "Raw Date" as raw_date
-    from rpt_birthday_anniversary
+    from import_rpt_birthday_anniversary
 ),
 
 -- Container: Group and filter
--- Remap 'Core ' to 'Core' on member_type
+-- Remap 'Core ' (with trailing space) to 'Core' in member_type
 clean_2 as (
     select
         first_name,
@@ -34,7 +34,7 @@ clean_2 as (
         end as member_type,
         anniversary_or_birthday,
         raw_date
-    from import_rpt_birthday_anniversary
+    from renamed
 ),
 
 -- Exclude rows where status = 'Inactive' (keep nulls)

@@ -1,7 +1,7 @@
 -- Tableau Prep flow: L00 - Planning
 -- Flow LUID: 4abece76-eb9e-4f0e-a4c7-d97a6650c18a
 -- Output data source: L01 - Planning DS
--- Created by Autom8 on 2026-10-15 10:17
+-- Created by Autom8 on 2026-10-15 10:33
 {{ config(materialized='view') }}
 
 with
@@ -14,8 +14,8 @@ import_rpt_dim_employee as (
     select * from {{ source('client_inh_datamart', 'rpt_dim_employee') }}
 ),
 
--- Clean step: Last 52 weeks — relative date filter on Engagement Date
--- REVIEW: verify the relative date boundary matches Prep behaviour
+-- Container: Last 52 weeks – relative date filter on Engagement Date
+-- REVIEW: verify week boundary logic matches Prep
 last_52_weeks as (
     select
         "Engagement Date" as engagement_date,
@@ -47,11 +47,10 @@ last_52_weeks as (
         "Hubspot Url" as hubspot_url,
         "TABMOVE" as tabmove
     from import_rpt_planning
-    where "Engagement Date" >= dateadd(week, -52, date_trunc(week, current_date()))
-      and "Engagement Date" is not null
+    where "Engagement Date" >= dateadd(week, -52, current_date())
 ),
 
--- Clean step: Planning Username — add Username from Employee Email Address
+-- Container: Planning Username – add Username from email
 planning_username as (
     select
         *,
@@ -59,7 +58,7 @@ planning_username as (
     from last_52_weeks
 ),
 
--- Clean step: Employee Username — rename and add Username
+-- Container: Employee Username – rename + add Username from email
 employee_username as (
     select
         "Employee HK" as employee_hk,

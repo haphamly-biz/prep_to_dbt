@@ -1,7 +1,7 @@
 -- Tableau Prep flow: L00 - Hubspot Deals
 -- Flow LUID: 2bcf5f5a-f0a3-4de7-adf2-abaacaa9c3b1
 -- Output data source: L01 - HubSpot Deals DS
--- Created by Autom8 on 2026-10-15 10:18
+-- Created by Autom8 on 2026-10-15 10:34
 {{ config(materialized='view') }}
 
 with
@@ -71,6 +71,24 @@ rpt_fact_deal_detail_renamed as (
     from import_rpt_fact_deal_detail
 ),
 
+-- Rename RPT_DIM_DEAL_DETAIL columns to snake_case
+rpt_dim_deal_detail_renamed as (
+    select
+        "Deal Detail HK" as deal_detail_hk,
+        "Deal Detail ID" as deal_detail_id,
+        "Deal Details" as deal_details,
+        "Deal Detail Description" as deal_detail_description,
+        "Currency" as currency,
+        "Product Description" as product_description,
+        "Category" as category,
+        "Sub Category" as sub_category,
+        "Vendor" as vendor,
+        "Product" as product,
+        "Additional Information" as additional_information,
+        "Domain" as domain
+    from import_rpt_dim_deal_detail
+),
+
 -- DIM_DEAL to FACT_DEAL: inner join on deal_hk
 dim_deal_to_fact_deal as (
     select
@@ -104,24 +122,6 @@ dim_deal_to_fact_deal as (
         on l.deal_hk = r.deal_hk
 ),
 
--- Rename RPT_DIM_DEAL_DETAIL columns to snake_case
-rpt_dim_deal_detail_renamed as (
-    select
-        "Deal Detail HK" as deal_detail_hk,
-        "Deal Detail ID" as deal_detail_id,
-        "Deal Details" as deal_details,
-        "Deal Detail Description" as deal_detail_description,
-        "Currency" as currency,
-        "Product Description" as product_description,
-        "Category" as category,
-        "Sub Category" as sub_category,
-        "Vendor" as vendor,
-        "Product" as product,
-        "Additional Information" as additional_information,
-        "Domain" as domain_col
-    from import_rpt_dim_deal_detail
-),
-
 -- Add DEAL_DETAIL: inner join on deal_detail_hk
 add_deal_detail as (
     select
@@ -137,7 +137,7 @@ add_deal_detail as (
         r.vendor,
         r.product,
         r.additional_information,
-        r.domain_col
+        r.domain
     from dim_deal_to_fact_deal as l
     inner join rpt_dim_deal_detail_renamed as r
         on l.deal_detail_hk = r.deal_detail_hk
@@ -197,7 +197,7 @@ final as (
         vendor,
         product,
         additional_information,
-        domain_col
+        domain
     from add_deal_detail
 )
 
